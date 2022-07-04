@@ -5,5 +5,5 @@ import com.vladi.karasove.sharound.objects.Song;
 import java.util.ArrayList;
 
 public interface CallBack_loadSongs {
-    void loadSongsToUser(ArrayList<Song> songs);
+    void loadSongsToUser(Song songs);
 }

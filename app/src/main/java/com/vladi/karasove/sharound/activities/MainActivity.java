@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         if(MyUserData.getInstance()==null){
             myUserData = MyUserData.initHelper();
-            loadUserDetails();
+            myUserData.loadUser();
         }
         findViews();
         setFragments();

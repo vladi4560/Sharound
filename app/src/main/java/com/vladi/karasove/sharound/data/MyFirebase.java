@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vladi.karasove.sharound.CallBacks.CallBack_LoadUser;
 import com.vladi.karasove.sharound.CallBacks.CallBack_loadSongs;
 import com.vladi.karasove.sharound.objects.Song;
 import com.vladi.karasove.sharound.objects.User;
@@ -23,8 +24,13 @@ public class MyFirebase {
     private DatabaseReference users,songs;
     private static MyFirebase single_instance;
     private CallBack_loadSongs callBack_loadSongs;
+    private CallBack_LoadUser callBack_loadUser;
     private User user;
 
+    public MyFirebase setCallBack_LoadUser(CallBack_LoadUser callBack_loadUser) {
+        this.callBack_loadUser = callBack_loadUser;
+        return this;
+    }
     public MyFirebase setCallBack_loadSongs(CallBack_loadSongs callBack_loadSongs) {
         this.callBack_loadSongs = callBack_loadSongs;
         return this;
@@ -64,6 +70,34 @@ public class MyFirebase {
         }
     }
 
+    public  void loadUser(String userID) {
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                   return;
+                } else {
+                    try {
+                        User user = snapshot.getValue(User.class);
+                        loadUserSongs(userID);
+                        if (callBack_loadUser != null) {
+                            callBack_loadUser.loadUser(user);
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.d("tfff", error.getMessage());
+            }
+        };
+        users.child(userID).addListenerForSingleValueEvent(eventListener);
+    }
+
+
     public void loadUserSongs(String uid) {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -75,13 +109,14 @@ public class MyFirebase {
                             Song item = child.getValue(Song.class);
                             songs.add(item);
                             Log.i("pttt",item.toString());
+                            if (callBack_loadSongs != null) {
+                                callBack_loadSongs.loadSongsToUser(item);
+                            }
                         } catch (Exception ex) {
                         }
                     }
                 }
-                if (callBack_loadSongs != null) {
-                    callBack_loadSongs.loadSongsToUser(songs);
-                }
+
             }
 
             @Override

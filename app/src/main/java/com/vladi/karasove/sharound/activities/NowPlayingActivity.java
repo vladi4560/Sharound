@@ -67,7 +67,7 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
     }
 
     private void defaultVideo() {
-        playerView.initialize("AIzaSyBwIBqWbB1a78MkIX2kxkOtv7ZjPlIBZmU",
+        playerView.initialize("API KEY",
                 new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
@@ -93,7 +93,7 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
         songID = b.getString("videoID");
         titleID = b.getString("title");
         dateID = b.getString("date");
-        playerView.initialize("AIzaSyBwIBqWbB1a78MkIX2kxkOtv7ZjPlIBZmU",
+        playerView.initialize("API KEY",
                 new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
@@ -115,7 +115,7 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
     }
 
     private void songFromPlayList(int position) {
-        playerView.initialize("AIzaSyBwIBqWbB1a78MkIX2kxkOtv7ZjPlIBZmU", new YouTubePlayer.OnInitializedListener() {
+        playerView.initialize("API KEY", new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean b) {

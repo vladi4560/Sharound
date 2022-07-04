@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.vladi.karasove.sharound.CallBacks.CallBack_LoadUser;
 import com.vladi.karasove.sharound.CallBacks.CallBack_loadSongs;
 import com.vladi.karasove.sharound.objects.Song;
 import com.vladi.karasove.sharound.objects.User;
@@ -33,6 +34,7 @@ public class MyUserData {
         myUser = new User();
         songs = new ArrayList<>();
         myFirebase.setCallBack_loadSongs(callBack_loadSongs);
+        myFirebase.setCallBack_LoadUser(callBack_loadUser);
     }
 
     public static MyUserData initHelper() {
@@ -41,7 +43,9 @@ public class MyUserData {
         }
         return single_instance;
     }
-
+    public void loadUser(){
+        myFirebase.loadUser(myAuth.getUid());
+    }
     public static MyUserData getInstance() {
         return single_instance;
     }
@@ -81,11 +85,23 @@ public class MyUserData {
         myFirebase.loadUserSongs(myAuth.getCurrentUser().getUid());
     }
 
+   public void loadSong(Song song){
+        songs.add(song);
+   }
     private CallBack_loadSongs callBack_loadSongs= new CallBack_loadSongs() {
         @Override
-        public void loadSongsToUser(ArrayList<Song> songs) {
+        public void loadSongsToUser(Song song) {
             Log.d("pttt",songs.toString());
-            setSongs(songs);
+            loadSong(song);
+        }
+    };
+    private CallBack_LoadUser callBack_loadUser= new CallBack_LoadUser() {
+        @Override
+        public void loadUser(User user) {
+            myUser.setUserFirstName(user.getUserFirstName());
+            myUser.setUserLastName(user.getUserLastName());
+            myUser.setBirthYear(user.getUserBirthYear());
+            myUser.setUserPhoneNumber(myAuth.getCurrentUser().getPhoneNumber());
         }
     };
 }

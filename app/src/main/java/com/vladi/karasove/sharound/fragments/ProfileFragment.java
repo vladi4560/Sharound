@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //loadUserDetails();
+        loadUserDetails();
     }
 
     private void loadUserDetails() {
