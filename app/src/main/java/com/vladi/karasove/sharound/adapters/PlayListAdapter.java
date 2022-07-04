@@ -21,17 +21,17 @@ import java.util.ArrayList;
 
 public class PlayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public PlayListAdapter(Context context, ArrayList<Song> songs) {
-        this.context = context;
-        this.songs = songs;
-    }
-
     private Context context;
     private ArrayList<Song> songs;
     private CallBack_AdatperToPlaylist callBack_adatperToPlaylist;
 
-    public void setCallBack_adatperToPlaylist(CallBack_AdatperToPlaylist callback){
+    public void setCallBack_adapterToPlaylist(CallBack_AdatperToPlaylist callback){
         this.callBack_adatperToPlaylist=callback;
+    }
+
+    public PlayListAdapter(Context context, ArrayList<Song> songs) {
+        this.context = context;
+        this.songs = songs;
     }
     @NonNull
     @Override
@@ -49,7 +49,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return 0;
+        return songs.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -63,7 +63,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callBack_adatperToPlaylist.playSong(getAdapterPosition());
+                    callBack_adatperToPlaylist.playSong(songs.get(getAdapterPosition()));
                 }
             });
         }

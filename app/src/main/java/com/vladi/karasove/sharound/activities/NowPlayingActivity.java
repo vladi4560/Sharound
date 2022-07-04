@@ -20,7 +20,7 @@ import com.vladi.karasove.sharound.objects.Song;
 
 import java.util.Iterator;
 
-public class NowPlayingActivity extends YouTubeBaseActivity {
+public class NowPlayingActivity extends YouTubeBaseActivity implements YouTubePlayer.PlayerStateChangeListener, YouTubePlayer.OnInitializedListener{
     private YouTubePlayerView playerView;
     private MaterialTextView title, date;
     private MaterialButton saveSongBtn;
@@ -28,32 +28,37 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
     private VideoYT videoYT;
     private String songID, titleID, dateID;
     private MyUserData myUserData;
-    private int fromWhere=0;
+    private int fromWhere = 0;
+    private int songIndex = 0;
+    private Song nowPlay=new Song();
+    private YouTubePlayer.OnInitializedListener onInitializedListener;
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("pttt", "line 36 on pause");
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_now_playing);
-        findViews();
         myUserData = MyUserData.getInstance();
         Bundle b = getIntent().getExtras();
-        fromWhere= b.getInt("POS");
+        findViews();
+        fromWhere = b.getInt("POS");
         switch (fromWhere) {
             case 1:
-                songFromPlayList(b.getInt("position"));
+                nowPlay.setVideoID( b.getString("videoID"));
+                nowPlay.setVideoTitle( b.getString("title"));
+                nowPlay.setVideoDate( b.getString("date"));
+                saveSongBtn.setVisibility(View.INVISIBLE);
+                songFromPlayList(true);
                 break;
             case 2:
+                saveSongBtn.setVisibility(View.VISIBLE);
                 songFromSearchView();
                 break;
             default:
@@ -62,12 +67,10 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
         }
 
 
-
-
     }
 
     private void defaultVideo() {
-        playerView.initialize("API KEY",
+        playerView.initialize("key",
                 new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
@@ -75,14 +78,14 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
                         // do any work here to cue video, play video, etc.
 
                         youTubePlayer.loadVideo("RjrA-slMoZ4");
-                        Log.i("pttt", "playing");
+                        Log.d("pttt", "playing");
                         youTubePlayer.play();
                     }
 
                     @Override
                     public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                         YouTubeInitializationResult youTubeInitializationResult) {
-                        Log.i("pttt", "Not playing");
+                        Log.d("pttt", "Not playing");
                     }
                 });
 
@@ -93,48 +96,64 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
         songID = b.getString("videoID");
         titleID = b.getString("title");
         dateID = b.getString("date");
-        playerView.initialize("API KEY",
+        playerView.initialize("key",
                 new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                         YouTubePlayer youTubePlayer, boolean b) {
-                            title.setText(titleID);
-                            date.setText(dateID);
-                            Log.i("pttt", titleID + " " + dateID);
-                            youTubePlayer.loadVideo(songID);
-                            youTubePlayer.play();
+                        title.setText(titleID);
+                        date.setText(dateID);
+                        Log.d("pttt", titleID + " " + dateID);
+                        youTubePlayer.loadVideo(songID);
+                        youTubePlayer.play();
                     }
 
                     @Override
                     public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                         YouTubeInitializationResult youTubeInitializationResult) {
-                        Log.i("pttt", "Not playing");
+                        Log.d("pttt", "Not playing");
                     }
                 });
 
     }
 
-    private void songFromPlayList(int position) {
-        playerView.initialize("API KEY", new YouTubePlayer.OnInitializedListener() {
+    private void songFromPlayList(boolean loop) {
+       if(loop){
+           for (Song songLoop : myUserData.getSongs()) {
+               if (songLoop.getVideoID().equals(songID)) {
+                   songIndex = myUserData.getSongs().indexOf(songLoop);
+               }
+           }
+       }
+
+
+        Log.d("pttt","line 130="+songIndex);
+
+
+
+        playerView.initialize("Key", new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean b) {
-                while (position != myUserData.getSongs().size()){
-                    youTubePlayer.loadVideo(myUserData.getSongs().get(position).getVideoID());
+                Log.d("pttt","line 133="+nowPlay.toString());
+                    youTubePlayer.setPlayerStateChangeListener(NowPlayingActivity.this);
+                    title.setText(nowPlay.getVideoTitle());
+                    date.setText(nowPlay.getVideoDate());
+                    youTubePlayer.loadVideo(nowPlay.getVideoID());
                     youTubePlayer.play();
-                    ;
-                }
-
 
             }
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                 YouTubeInitializationResult youTubeInitializationResult) {
-                Log.i("pttt", "Not playing");
+                Log.d("pttt", "Not playing");
             }
         });
+
+
     }
+
 
 
     private void findViews() {
@@ -146,7 +165,89 @@ public class NowPlayingActivity extends YouTubeBaseActivity {
     }
 
     private void saveWasClicked() {
-        myUserData.saveSong(new Song(songID, titleID, dateID));
+        Song song = new Song(songID, titleID, dateID);
+        myUserData.saveSong(song);
     }
+
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onLoaded(String s) {
+
+    }
+
+    @Override
+    public void onAdStarted() {
+
+    }
+
+    @Override
+    public void onVideoStarted() {
+
+    }
+
+    @Override
+    public void onVideoEnded() {
+
+            if(fromWhere==1){
+                Log.d("pttt","line 194");
+
+                if(songIndex<myUserData.getSongs().size()){
+                    Log.d("pttt","line 196 "+songIndex);
+                    songIndex++;
+                }else{
+                    songIndex=0;
+                    Log.d("pttt","line 200");
+
+                }
+                nowPlay=myUserData.getSongs().get(songIndex);
+                songFromPlayList(false);
+
+            }
+    }
+
+    @Override
+    public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        Log.d("pttt","line 133="+nowPlay.toString());
+        youTubePlayer.setPlayerStateChangeListener(NowPlayingActivity.this);
+        title.setText(nowPlay.getVideoTitle());
+        date.setText(nowPlay.getVideoDate());
+        youTubePlayer.loadVideo(nowPlay.getVideoID());
+        youTubePlayer.play();
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        Log.d("pttt", "Not playing");
+    }
+
+
+ public void startListener(){
+     onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+         @Override
+         public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+             Log.d("pttt","line 133="+nowPlay.toString());
+             youTubePlayer.setPlayerStateChangeListener(NowPlayingActivity.this);
+             title.setText(nowPlay.getVideoTitle());
+             date.setText(nowPlay.getVideoDate());
+             youTubePlayer.loadVideo(nowPlay.getVideoID());
+             youTubePlayer.play();
+         }
+
+         @Override
+         public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+             Log.d("pttt", "Not playing");
+         }
+     };
+     playerView.initialize("AIzaSyBdttp7ShxBLKddZQf2AtkNz52w7Qj_q1I",onInitializedListener);
+ }
 
 }

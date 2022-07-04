@@ -66,17 +66,22 @@ public class MyUserData {
     }
 
     public void saveSong(Song song) {
-        if(song == null)
-                return;
-        if(checkSongExists(song))
-                return;
+        if(song == null){
+            Log.d("pttt","song == null");
+            return;
+        }
+        if(checkSongExists(song)){
+            Log.d("pttt","checkSongExists");
+            return;
+        }
         songs.add(song);
+        Log.d("pttt","line 76 size:"+songs.size());
         myFirebase.saveSong(song,myAuth.getUid());
     }
 
-    private boolean checkSongExists(Song songtemp) {
+    private boolean checkSongExists(Song songTemp) {
         for (Song song : songs) {
-            if(song.getVideoID().equals(song.getVideoID()))
+            if(songTemp.getVideoID().equals(song.getVideoID()))
                 return true;
         }
         return false;
@@ -91,7 +96,7 @@ public class MyUserData {
     private CallBack_loadSongs callBack_loadSongs= new CallBack_loadSongs() {
         @Override
         public void loadSongsToUser(Song song) {
-            Log.d("pttt",songs.toString());
+            Log.d("pttt","line 95 dataman"+songs.toString());
             loadSong(song);
         }
     };

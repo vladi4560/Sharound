@@ -10,7 +10,7 @@ import retrofit2.http.Url;
 
 public class YoutubeAPI {
     public static final String BASE_URL = "https://www.googleapis.com/youtube/v3/";
-    public static final String KEY = "API KEY";
+    public static final String KEY = "&key";
     public static final String SEARCH = "search?";
     public static final String FREETEXT="&q=";
     public static final String TYPE="&type=video";

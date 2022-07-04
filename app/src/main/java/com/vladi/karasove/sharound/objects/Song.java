@@ -1,6 +1,9 @@
 package com.vladi.karasove.sharound.objects;
 
-public class Song {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Song implements Parcelable {
     public String getVideoID() {
         return videoID;
     }
@@ -36,5 +39,25 @@ public class Song {
     }
 
     public Song() {
+    }
+
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "videoID='" + videoID + '\'' +
+                ", videoTitle='" + videoTitle + '\'' +
+                ", videoDate='" + videoDate + '\'' +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

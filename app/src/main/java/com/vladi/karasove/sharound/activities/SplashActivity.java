@@ -38,15 +38,19 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("pttt","dorin0");
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 // FirebaseDB firebaseDB=FirebaseDB.getInstance();
                 if (firebaseAuth.getCurrentUser() != null) {
+                    Log.d("pttt","dorin1");
                     //firebaseDB.hasProfile(firebaseAuth.getCurrentUser().getUid());
                     progressBar.setVisibility(View.INVISIBLE);
                     openActivity(MainActivity.class);
                 } else {
-                    if (!alreadyDone)
-                            phoneAuth();
+                    if (!alreadyDone){
+                        Log.d("pttt","dorin2");
+                        phoneAuth();
+                    }
                 }
             }
         }, SPLASH_TIME_OUT);
@@ -71,9 +75,12 @@ public class SplashActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.PhoneBuilder().build());
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .build();
+        Log.d("pttt","dorin");
         signInLauncher.launch(signInIntent);
+
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -81,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
                 @Override
                 public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    openActivity(SignUpActivity.class);
+                    Log.d("pttt",result.toString());
                     onSignInResult(result);
 
                 }
@@ -90,8 +97,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse r = result.getIdpResponse();
-        openActivity(SignUpActivity.class);
+
         if (result.getResultCode() == RESULT_OK) {
+            openActivity(SignUpActivity.class);
             //FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
         } else {
 

@@ -74,27 +74,33 @@ public class SearchFragment extends Fragment {
     }
 
     private void SearchVideos() {
-        if (!TextUtils.isEmpty(searchView.getEditText().getText().toString())) {
+        //if (!TextUtils.isEmpty(searchView.getEditText().getText().toString())) {
             getJson(searchView.getEditText().getText().toString());
-        }
+       // }
     }
 
     private void getJson(String query) {
         String url = YoutubeAPI.BASE_URL + YoutubeAPI.SEARCH + YoutubeAPI.PART + YoutubeAPI.KEY + YoutubeAPI.MAXRESULTS
                 + YoutubeAPI.FREETEXT + query + YoutubeAPI.TYPE;
-        Log.v("pttt", url);
         Call<ModelHome> data = YoutubeAPI.getHomeVideo().getYT(url);
+
         data.enqueue(new Callback<ModelHome>() {
             @Override
             public void onResponse(Call<ModelHome> call, Response<ModelHome> response) {
+                videoYTS.clear();
+                adapter.notifyDataSetChanged();
                 if (response.errorBody() != null) {
-                    Log.v("pttt", "on Response search:" + response.errorBody().toString());
-                } else {
+                    Log.d("pttt", "line 91 searchF "+"on Response search:" + response.errorBody().toString());
+                }else if(query.equals("")){
+                    ModelHome mh = response.body();
+                    Toast.makeText(activity, "No Videos Found", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                }else {
                     ModelHome mh = response.body();
                     if (mh.getItems().size() != 0) {
                         videoYTS.addAll(mh.getItems());
                         adapter.notifyDataSetChanged();
-                        Log.v("pttt", videoYTS.get(0).getId().getVideoId());
+                        Log.d("pttt", "line 97 searchF "+videoYTS.get(0).getId().getVideoId());
                     } else {
                         Toast.makeText(activity, "No Video", Toast.LENGTH_SHORT).show();
                     }

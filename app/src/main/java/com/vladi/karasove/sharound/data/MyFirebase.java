@@ -36,6 +36,7 @@ public class MyFirebase {
         return this;
     }
     private MyFirebase() {
+        Log.d("pttt","line 39 myfirebase");
         database = FirebaseDatabase.getInstance();
         users = database.getReference(USERS);
         songs = database.getReference(SONGS);
@@ -50,21 +51,24 @@ public class MyFirebase {
     }
 
     public void createUser(String uid, User user) {
+        Log.d("pttt","created user successfully");
         if (user != null && uid != null) {
             users.child(uid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Log.i("pttt","created user successfully");
+                    Log.d("pttt","created user successfully");
                 }
             });
         }
     }
     public void saveSong(Song song,String uid){
         if(song!=null){
+            Log.d("pttt",songs.getKey()+" "+song.toString());
             songs.child(uid).child(song.getVideoID()).setValue(song).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Log.i("pttt","save song successfully");
+                    Log.d("pttt","save song successfully");
+                    Log.d("pttt","task:" + task.isSuccessful());
                 }
             });
         }
