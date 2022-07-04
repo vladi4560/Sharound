@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85225006727",
+    "project_id": "sharound-13194",
+    "storage_bucket": "sharound-13194.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85225006727:android:38068047b49a39b64e3a22",
+        "android_client_info": {
+          "package_name": "com.vladi.karasove.sharound"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85225006727-h0b52e2o4ks6csnml1absnm2k67pv4ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLi0tm04sAel5WOl-MawRYcN8TGM466BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85225006727-h0b52e2o4ks6csnml1absnm2k67pv4ec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
