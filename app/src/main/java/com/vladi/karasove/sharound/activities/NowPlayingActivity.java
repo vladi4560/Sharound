@@ -247,7 +247,7 @@ public class NowPlayingActivity extends YouTubeBaseActivity implements YouTubePl
              Log.d("pttt", "Not playing");
          }
      };
-     playerView.initialize("AIzaSyBdttp7ShxBLKddZQf2AtkNz52w7Qj_q1I",onInitializedListener);
+     playerView.initialize("API KEY",onInitializedListener);
  }
 
 }
