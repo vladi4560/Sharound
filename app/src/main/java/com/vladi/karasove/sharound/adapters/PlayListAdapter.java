@@ -54,7 +54,7 @@ public class PlayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private MaterialTextView title,date;
-        private LinearLayoutCompat cardView;
+        private MaterialCardView cardView;
         public MyViewHolder(@NonNull View view) {
             super(view);
             title= view.findViewById(R.id.songList_LBL_title);

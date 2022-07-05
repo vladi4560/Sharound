@@ -5,18 +5,28 @@ public class User {
     private String userFirstName;
     private String userLastName;
     private String userPhoneNumber;
-    private String birthYear;
+    private String userBirthYear;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userPic='" + userPic + '\'' +
+                ", userFirstName='" + userFirstName + '\'' +
+                ", userLastName='" + userLastName + '\'' +
+                ", userPhoneNumber='" + userPhoneNumber + '\'' +
+                ", birthYear='" + userBirthYear + '\'' +
+                '}';
+    }
 
     public User() {
     }
 
     public void setBirthYear(String birthYear) {
-        this.birthYear = birthYear;
+        this.userBirthYear = birthYear;
     }
 
     public String getUserBirthYear() {
-        return birthYear;
+        return userBirthYear;
     }
 
     public String getUserPic() {

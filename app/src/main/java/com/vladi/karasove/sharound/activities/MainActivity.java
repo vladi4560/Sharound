@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private MyUserData myUserData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         playListFragment.setActivity(this, callBack_playListToPlayNow);
         profileFragment = new ProfileFragment();
         profileFragment.setActivity(this);
+
     }
 
     @Override

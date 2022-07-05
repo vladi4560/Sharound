@@ -52,14 +52,7 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            app:maxImageSize="50dp"
-            android:src="@drawable/ic_add_sign"
-            app:tint="@color/ocean_blue"
-            app:layout_anchor="@id/main_bottomAppBar" />
+
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

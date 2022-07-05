@@ -83,6 +83,7 @@ public class MyFirebase {
                 } else {
                     try {
                         User user = snapshot.getValue(User.class);
+                        Log.d("pttt","line 86 firebase"+user.toString()+"  "+ userID);
                         loadUserSongs(userID);
                         if (callBack_loadUser != null) {
                             callBack_loadUser.loadUser(user);

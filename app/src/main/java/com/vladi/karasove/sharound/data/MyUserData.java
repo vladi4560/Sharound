@@ -19,6 +19,8 @@ public class MyUserData {
     private User myUser;
     private FirebaseAuth myAuth;
     private MyFirebase myFirebase;
+    private int songIndex = 1;
+    private Song nowPlay=new Song();
 
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
@@ -65,6 +67,22 @@ public class MyUserData {
         return myUser;
     }
 
+    public int getSongIndex() {
+        return songIndex;
+    }
+
+    public void setSongIndex(int songIndex) {
+        this.songIndex = songIndex;
+    }
+
+    public Song getNowPlay() {
+        return nowPlay;
+    }
+
+    public void setNowPlay(Song nowPlay) {
+        this.nowPlay = nowPlay;
+    }
+
     public void saveSong(Song song) {
         if(song == null){
             Log.d("pttt","song == null");
@@ -106,6 +124,7 @@ public class MyUserData {
             myUser.setUserFirstName(user.getUserFirstName());
             myUser.setUserLastName(user.getUserLastName());
             myUser.setBirthYear(user.getUserBirthYear());
+            Log.d("pttt","line 127 dataman"+user.getUserBirthYear());
             myUser.setUserPhoneNumber(myAuth.getCurrentUser().getPhoneNumber());
         }
     };
