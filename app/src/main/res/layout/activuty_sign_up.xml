@@ -44,6 +44,21 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_profile_pic" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/signUP_BTN_AddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/ocean_blue"
+                android:src="@drawable/ic_add_sign"
+                app:borderWidth="0dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="8dp"
+                app:maxImageSize="30dp"
+                app:tint="@color/white"
+                app:fabSize="mini"
+                android:layout_gravity="bottom"/>
+
+
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -109,8 +124,8 @@
             android:id="@+id/signUP_SPN_yearSpinner"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:paddingTop="4dp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

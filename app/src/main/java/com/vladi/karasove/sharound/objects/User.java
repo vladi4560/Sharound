@@ -7,6 +7,10 @@ public class User {
     private String userPhoneNumber;
     private String userBirthYear;
 
+    public void setUserBirthYear(String userBirthYear) {
+        this.userBirthYear = userBirthYear;
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -7,18 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.vladi.karasove.sharound.R;
 import com.vladi.karasove.sharound.data.MyUserData;
 
 public class ProfileFragment extends Fragment {
     private AppCompatActivity activity;
+    private AppCompatImageView profilePic;
     private TextView firstName;
     private TextView lastName;
     private TextView phoneNum;
     private TextView birthYear;
     private MyUserData myUserData;
+
     public Fragment setActivity(AppCompatActivity activity) {
         this.activity = activity;
         myUserData= MyUserData.getInstance();
@@ -50,6 +54,7 @@ public class ProfileFragment extends Fragment {
         lastName=view.findViewById(R.id.profile_TXT_lastName);
         phoneNum=view.findViewById(R.id.profile_TXT_phoneNum);
         birthYear=view.findViewById(R.id.profile_TXT_birthYear);
+        profilePic=view.findViewById(R.id.profile_IMG_profile);
     }
     @Override
     public void onStart() {
@@ -62,5 +67,8 @@ public class ProfileFragment extends Fragment {
         lastName.setText(myUserData.getMyUser().getUserLastName());
         phoneNum.setText(myUserData.getMyUser().getUserPhoneNumber());
         birthYear.setText(myUserData.getMyUser().getUserBirthYear());
+        if(myUserData.getMyUser().getUserPic()!=null){
+            Glide.with(activity).load(myUserData.getMyUser().getUserPic()).into(profilePic);
+        }
     }
 }

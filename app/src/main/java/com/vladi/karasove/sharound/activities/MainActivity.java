@@ -5,13 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.vladi.karasove.sharound.CallBacks.CallBack_PlayListToPlayNow;
 import com.vladi.karasove.sharound.CallBacks.CallBack_SearchToPlayNow;
@@ -33,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private PlayListFragment playListFragment;
     private FragmentManager fragmentManager;
     private MyUserData myUserData;
-
+    private FloatingActionButton logOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +126,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthUI.getInstance()
+                        .signOut(MainActivity.this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @SuppressLint("RestrictedApi")
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                startActivity(new Intent(MainActivity.this, SplashActivity.class));
+                                Toast.makeText(MainActivity.this, "Signed Out", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+
+            }
+        });
     }
 
 
@@ -131,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void findViews() {
         bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
+        logOut = findViewById(R.id.main_BTN_logOut);
         bottomNavigationView.setBackground(null);
+
 
     }
 

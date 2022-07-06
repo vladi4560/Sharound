@@ -3,7 +3,7 @@ package com.vladi.karasove.sharound.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Song implements Parcelable {
+public class Song  {
     public String getVideoID() {
         return videoID;
     }
@@ -51,13 +51,5 @@ public class Song implements Parcelable {
                 '}';
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

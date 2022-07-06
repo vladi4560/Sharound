@@ -1,7 +1,12 @@
 package com.vladi.karasove.sharound.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,8 +23,13 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.vladi.karasove.sharound.CallBacks.CallBack_UploadImg;
 import com.vladi.karasove.sharound.R;
 import com.vladi.karasove.sharound.Validator;
 import com.vladi.karasove.sharound.data.MyFirebase;
@@ -35,13 +45,14 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputLayout lastName;
     private AppCompatSpinner yearSpinner;
     private String year="";
-    private String urlIMG;
     private AppCompatImageView profileIMG;
     private MaterialButton signUpBtn;
+    private String urlIMG;
     Validator validatorFirstName;
     Validator validatorLastName;
     private MyUserData myUserData;
     private MyFirebase myFirebase;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activuty_sign_up);
         MyUserData.initHelper();
         myUserData= MyUserData.getInstance();
+        myFirebase = MyFirebase.getInstance();
+        myFirebase.setCallBack_uploadImg(callBack_uploadImg);
         findViews();
         initValidator();
         initButtons();
@@ -60,7 +73,8 @@ public class SignUpActivity extends AppCompatActivity {
         yearSpinner = findViewById(R.id.signUP_SPN_yearSpinner);
         fillSpinner();
         signUpBtn = findViewById(R.id.signUP_BTN_signUp);
-
+        floatingActionButton = findViewById(R.id.signUP_BTN_AddItem);
+        profileIMG = findViewById(R.id.signUP_IMG_profile);
     }
 
     private void fillSpinner() {
@@ -110,6 +124,26 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                ImagePicker.Companion.with(SignUpActivity.this)
+                        .crop()	    			//Crop image(Optional), Check Customization for more option
+                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                        .start();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri resultUri = data.getData();
+        profileIMG.setImageURI(resultUri);
+        myUserData.uploadImageProfile(resultUri,this);
     }
 
     private void openActivity(Class activity){
@@ -118,7 +152,12 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
+    public CallBack_UploadImg callBack_uploadImg= new CallBack_UploadImg() {
+        @Override
+        public void urlReady(String uri, Activity activity) {
+            urlIMG=uri;
+        }
+    };
 
 }
 

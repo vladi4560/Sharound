@@ -1,11 +1,13 @@
 package com.vladi.karasove.sharound.data;
 
-import android.content.Context;
+import android.app.Activity;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.vladi.karasove.sharound.CallBacks.CallBack_LoadUser;
 import com.vladi.karasove.sharound.CallBacks.CallBack_loadSongs;
+import com.vladi.karasove.sharound.CallBacks.CallBack_UploadImg;
 import com.vladi.karasove.sharound.objects.Song;
 import com.vladi.karasove.sharound.objects.User;
 
@@ -21,7 +23,7 @@ public class MyUserData {
     private MyFirebase myFirebase;
     private int songIndex = 1;
     private Song nowPlay=new Song();
-
+    private String urlIMG;
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
     }
@@ -58,7 +60,8 @@ public class MyUserData {
         myUser.setUserLastName(lastName);
         myUser.setBirthYear(year);
         myUser.setUserPhoneNumber(myAuth.getCurrentUser().getPhoneNumber());
-        //myUser.setUserPic(urlIMG);
+        Log.d("pttt","line 63 Myuserdata  "+ urlIMG.toString());
+        myUser.setUserPic(urlIMG);
         String uid = myAuth.getCurrentUser().getUid();
         myFirebase.createUser(uid, myUser);
     }
@@ -96,6 +99,9 @@ public class MyUserData {
         Log.d("pttt","line 76 size:"+songs.size());
         myFirebase.saveSong(song,myAuth.getUid());
     }
+    public void uploadImageProfile(Uri resultUri, Activity activity){
+            myFirebase.uploadImageProfile(resultUri,activity,myAuth.getCurrentUser().getUid());
+    }
 
     private boolean checkSongExists(Song songTemp) {
         for (Song song : songs) {
@@ -124,8 +130,10 @@ public class MyUserData {
             myUser.setUserFirstName(user.getUserFirstName());
             myUser.setUserLastName(user.getUserLastName());
             myUser.setBirthYear(user.getUserBirthYear());
+            myUser.setUserPic(user.getUserPic());
             Log.d("pttt","line 127 dataman"+user.getUserBirthYear());
             myUser.setUserPhoneNumber(myAuth.getCurrentUser().getPhoneNumber());
         }
     };
+
 }
