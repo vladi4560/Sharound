@@ -127,7 +127,7 @@ public class NowPlayingActivity extends YouTubeBaseActivity implements YouTubePl
            }
        }
 
-        playerView.initialize("AIzaSyBdttp7ShxBLKddZQf2AtkNz52w7Qj_q1I",this);
+        playerView.initialize("",this);
     }
 
 
