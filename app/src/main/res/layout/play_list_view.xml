@@ -5,11 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
-
-
-
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/songList_LNL_song"
+        android:id="@+id/playList_LNL_song"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -36,25 +33,14 @@
                 android:padding="5dp">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/songList_LBL_title"
+                    android:id="@+id/playList_LBL_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SONG NAME"
+                    android:text="Play List Name"
                     android:textColor="#FFFDFD"
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
-
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/songList_LBL_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="date"
-                    android:textColor="#FFFDFD"
-                    android:textSize="14sp"
-                     />
 
 
             </LinearLayout>
@@ -64,17 +50,15 @@
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/liqueur_IMG_image"
+        android:id="@+id/playList_IMG_image"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:layout_alignBottom="@id/songList_LNL_song"
+        android:layout_alignBottom="@id/playList_LNL_song"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:elevation="10dp"
         android:padding="4dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_music" />
-
+        android:src="@drawable/ic_library" />
 
 </RelativeLayout>
-

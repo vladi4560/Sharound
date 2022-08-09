@@ -24,6 +24,7 @@ import com.vladi.karasove.sharound.CallBacks.CallBack_PlayListToPlayNow;
 import com.vladi.karasove.sharound.CallBacks.CallBack_SearchToPlayNow;
 import com.vladi.karasove.sharound.R;
 import com.vladi.karasove.sharound.data.MyUserData;
+import com.vladi.karasove.sharound.fragments.ListOfPlayListFragment;
 import com.vladi.karasove.sharound.fragments.PlayListFragment;
 import com.vladi.karasove.sharound.fragments.ProfileFragment;
 import com.vladi.karasove.sharound.fragments.SearchFragment;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     public static final int SIZE = 4, SEARCH = 0, PLAYLIST = 1, PLAYING = 2, PROFILE = 3;
-    private Fragment[] allFragments;
+    private ListOfPlayListFragment listOfPlayListFragment;
     private SearchFragment searchFragment;
     private ProfileFragment profileFragment;
     private PlayListFragment playListFragment;
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragments(playListFragment);
                         break;
                     case R.id.menu_music:
-                        openActivity(NowPlayingActivity.class);
+                        replaceFragments(listOfPlayListFragment);
                         break;
                     case R.id.menu_profile:
                         replaceFragments(profileFragment);
@@ -162,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragments() {
-        allFragments = new Fragment[SIZE];
         searchFragment = new SearchFragment();
         searchFragment.setActivity(this, callBackSearchToPlayNow);
         playListFragment = new PlayListFragment();
         playListFragment.setActivity(this, callBack_playListToPlayNow);
         profileFragment = new ProfileFragment();
         profileFragment.setActivity(this);
-
+        listOfPlayListFragment = new ListOfPlayListFragment();
+        listOfPlayListFragment.setActivity(this);
     }
 
     @Override

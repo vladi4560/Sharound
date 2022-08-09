@@ -90,8 +90,4 @@ public class PlayListFragment extends Fragment {
         super.onStart();
     }
 
-//    private void loadSongs() {
-//       songs=myUserData.getSongs();
-//       Log.d("ptttt",songs.toString());
-//    }
 }
